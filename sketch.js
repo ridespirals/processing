@@ -52,11 +52,12 @@ function update() {
     // orbit
     orb.speed = orbitSlider.value() / 1000
     orb.theta += orb.speed
-    _.assign(orb, orbit_position(orb.theta * orbit_direction(), c.x, c.y, c.r))
+    _.assign(orb, orbit_position(orbit_direction(orb.theta), c.x, c.y, c.r))
 }
 
-function orbit_direction() {
-    return orbitDirection.value() === 1 ? 1 : -1
+function orbit_direction(theta) {
+    var dir = orbitDirection.value() === 1 ? 1 : -1
+    return theta * dir
 }
 
 function orbit_position(theta, center_x, center_y, orbit_radius) {
@@ -64,9 +65,4 @@ function orbit_position(theta, center_x, center_y, orbit_radius) {
         x: orbit_radius * cos(theta) + center_x,
         y: orbit_radius * sin(theta) + center_y
     }
-}
-
-function orbit_position2(orb, center_x, center_y, orbit_radius) {
-    orb.x = orbit_radius * cos(orb.theta) + center_x
-    orb.y = orbit_radius * sin(orb.theta) + center_y
 }
