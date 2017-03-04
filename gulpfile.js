@@ -3,7 +3,7 @@ var gulp = require('gulp'),
     reload = browserSync.reload;
 
 gulp.task('serve', function() {
-  browserSync({
+  return browserSync({
     notify: false,
     port: 9000,
     server: {
