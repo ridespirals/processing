@@ -4,13 +4,20 @@ function Vehicle(x, y) {
   this.acc = createVector()
   this.target = createVector(x, y)
   this.r = 8
-  this.maxspeed = 5
-  this.maxforce = 0.3
+  this.maxspeed = 10
+  this.maxforce = 1
 }
 
 Vehicle.prototype.behaviors = function() {
   var arrive = this.arrive(this.target)
+  var mouse = createVector(mouseX, mouseY)
+  var flee = this.flee(mouse)
+
+  arrive.mult(1)
+  flee.mult(5)
+
   this.applyForce(arrive)
+  this.applyForce(flee)
 }
 
 Vehicle.prototype.applyForce = function(f) {
@@ -42,10 +49,16 @@ Vehicle.prototype.arrive = function(target) {
   return steer
 }
 
-Vehicle.prototype.seek = function(target) {
+Vehicle.prototype.flee = function(target) {
   var desired = p5.Vector.sub(target, this.pos)
-  desired.setMag(this.maxspeed)
-  var steer = p5.Vector.sub(desired, this.vel)
-  steer.limit(this.maxforce)
-  return steer
+  var d = desired.mag()
+  if (d < 50) {
+    desired.setMag(this.maxspeed)
+    desired.mult(-1)
+    var steer = p5.Vector.sub(desired, this.vel)
+    steer.limit(this.maxforce)
+    return steer
+  } else {
+    return createVector(0, 0)
+  }
 }
