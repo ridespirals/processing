@@ -1,4 +1,5 @@
 var font;
+var vehicles = []
 
 function preload() {
   font = loadFont('Yrsa-Bold.otf')
@@ -6,16 +7,22 @@ function preload() {
 
 function setup() {
   createCanvas(600, 300)
-  background(51)
 
   var points = font.textToPoints('spirals', 30, 185, 192)
-  console.log(points)
 
   var totalPoints = points.length;
   for (var i = 0; i < totalPoints; i++) {
     var p = points[i];
-    stroke(0, 255, 255)
-    strokeWeight(4)
-    point(p.x, p.y)
+    var vehicle = new Vehicle(p.x, p.y)
+    vehicles.push(vehicle)
   }
+}
+
+function draw() {
+  background(51)
+  vehicles.forEach(v => {
+    v.behaviors()
+    v.update()
+    v.show()
+  })
 }
