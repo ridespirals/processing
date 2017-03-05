@@ -1,5 +1,5 @@
 function Vehicle(x, y) {
-  this.pos = createVector(x, y)
+  this.pos = createVector(random(width), random(height))
   this.vel = p5.Vector.random2D()
   this.acc = createVector()
   this.target = createVector(x, y)
@@ -9,8 +9,8 @@ function Vehicle(x, y) {
 }
 
 Vehicle.prototype.behaviors = function() {
-  var seek = this.seek(this.target)
-  this.applyForce(seek)
+  var arrive = this.arrive(this.target)
+  this.applyForce(arrive)
 }
 
 Vehicle.prototype.applyForce = function(f) {
@@ -27,6 +27,19 @@ Vehicle.prototype.show = function() {
   stroke(255)
   strokeWeight(this.r)
   point(this.pos.x, this.pos.y)
+}
+
+Vehicle.prototype.arrive = function(target) {
+  var desired = p5.Vector.sub(target, this.pos)
+  var dist = desired.mag()
+  var speed = this.maxspeed
+  if (dist < 100) {
+    speed = map(dist, 0, 100, 0, this.maxspeed)
+  }
+  desired.setMag(speed)
+  var steer = p5.Vector.sub(desired, this.vel)
+  steer.limit(this.maxforce)
+  return steer
 }
 
 Vehicle.prototype.seek = function(target) {
