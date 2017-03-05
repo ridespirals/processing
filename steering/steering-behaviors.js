@@ -2,7 +2,7 @@ var font;
 var vehicles = []
 
 function preload() {
-  font = loadFont('Yrsa-Bold.otf')
+  font = loadFont('steering/Yrsa-Bold.otf')
 }
 
 function setup() {
